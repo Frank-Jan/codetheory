@@ -1,0 +1,40 @@
+\documentclass{article}
+
+% Enter the name of the subject
+\newcommand{\assignmentname}{Rapport}
+% Your names
+\newcommand{\studentA}{Benjamin Vandersmissen}
+\newcommand{\studentB}{Frank-Jan Fekkes}
+
+\title{\textmd{\textbf{Codetheorie en Cryptografie}}\\\normalsize\vspace{0.1in}\Large{\assignmentname}\\\vspace{0.1in}\small{\textit{3 Ba INF \  2018-2019}}}
+\author{\studentA \\ \studentB}
+
+\begin{document}
+\maketitle
+\section{Enigma}
+\subsection{Werkwijze}
+De werkwijze die gebruikt wordt in de code om de enigma code te kraken, is de werkwijze beschreven in de les, door een graph te maken van 26x26 knooppunten en de knooppunten te linken met enigma machines aan de hand van de Crib. Voor elke mogelijke combinatie vam rotors en standen wordt dan gezien of de volledige graph 1 lampje op elke rij heeft of niet.\\
+
+\subsection{Resultaat}
+Uiteindelijk kwamen we na het algoritme uit te voeren een graph uit waarbij in elke rij buiten de Y-rij 1 lampje brandde, in de Y-rij brandde er geen. We konden dan heel gemakkelijk inferreren uit de rest van de graph dat Y ook gewoon gemapt moest worden op Y. We hebben geluk gehad met het populeren van de graph dat A effectief op A gemapt werd, omdat dit de waarde was die we initieel gebruikten om de rest van de graph te populeren. Als dit niet zo was, dan moesten we nog een beetje meer werk verrichten. \\ \\
+Rotors en Rotorstand : 2-3-4, D-H-G \\
+Deel van de oplossing : 
+\begin{verbatim}
+DEEERSTEOPGAVEVOORENIGMAEINEINFACHERJUNGERMENSCHREIST 
+\end{verbatim} 
+
+\section{Vigenere Plus}
+
+\subsection{Werkwijze}
+Voor Vigenere Plus moesten we 2 stappen doen, eerst de juiste permutatie vinden van de letters en daarna een paar simpele caesar sleutels oplossen. Om de permutatie te vinden, hebben we geopteerd om een brute force algoritme te gebruiken dat elke mogelijke permutatie van lengte 2 tot lengte 10 afloopt, de tekst op die manier permuteert en dan probeert te bepalen of de gepermuteerde tekst overeen komt met een vigenere versleuteld bericht. Om te bepalen of een bericht vigenere versleuteld is, splitsen we de gepermuteerde tekst op in groepjes, waar we dan een analyse op doen om te zien of die tekst eigenschappen vertoont die een 'normale tekst' ook vertoont. Immers, als we de tekst met de correcte lengte van het codewoord zouden kunnen splitsen, dan is elk groepje een simpele caesarsubstitutie en die behoudt de eigenschappen van de taal van de oorspronkelijke tekst. \\ \\
+De eerste manier die we probeerden om uit te vinden was gewoon te kijken naar de maximum en de minimum frequentie van letters in een groepje en als die voldoende ver uit elkaar lagen, dan was het de tekst die we zochten. We hebben geexperimenteerd met verschillende tresholds, die we gebaseerd hebben op frequentietabellen van de talen. \\ \\
+Een andere manier was dan te zien naar de som van de afstanden tussen de frequentie van elke letter en de frequentie als de letters uniform verdeeld zouden zijn. De gepermuteerde tekst met de hoogste som, zou dan wel de juiste tekst moeten zijn. \\ \\
+Deze eerste 2 werkwijzes gaven geen fatsoenlijke resultaten. Achteraf bleek dat er nog een programmeerfout in zat in het berekenen van de frequenties en dat dat de reden was waardoor die 2 methodes niet werkten, maar toen waren we al begonnen met het implementeren van nog een andere methode. \\ \\
+De laatste manier die we probeerden was het gebruiken van de zogenaamde 'Index of Coincidence', dit is een percentage berekend voor de hele tekst en des te hoger het percentage, des te meer kans dat de tekst geschreven is in een taal en niet gewoon random characters is. \\ \\
+
+\subsection{Resultaat}
+TBA: wachten op simulaties
+
+
+
+\end{document}
