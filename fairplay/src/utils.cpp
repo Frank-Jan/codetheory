@@ -365,8 +365,6 @@ void subProbing(double T, Keysquare& best_key, Text& original_text, Frequencies&
         }
         if(nr_rounds%500 == 0) {
             printKeysquare(best_key);
-            cout << "score: " << best_key.score;
-            cout << "\n";
         }
 
     }while(nr_rounds < max_rounds); //stop if maximum iterations have been met

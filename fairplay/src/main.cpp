@@ -5,10 +5,16 @@
 
 
 int main(){
-    string filename = "data/playfair.txt";
-    Text original_text = readFile(filename.c_str());
-    Frequencies original_freq = *loadFrequencies("data/bigram_english_raw.txt");    //array of 625 bigram frequencies
+    string text_file = "data/playfair.txt";
+    string bigram_file = "data/bigram_english_raw.txt";
+    string solution_file = "playfair_solution.txt";
+    cout << "Load code file\n";
 
+    Text original_text = readFile(text_file.c_str());
+    cout << "Load frequency file\n";
+    Frequencies original_freq = *loadFrequencies(bigram_file.c_str());    //array of 625 bigram frequencies
+
+    cout << "Generate key\n";
     //generate 5 different keys
     Keysquare best = {'P','A','L','M','E','R','S','T','O','N','B','C','D','F','G','H','I','K','Q','U','V','W','X','Y','Z'};
     generateKey(best);
@@ -22,14 +28,12 @@ int main(){
     Keysquare current;
     int nr_rounds = 0;
     int max_rounds = 10000;
-    double lowest_Score = 10000000;
+    cout << "Decypher Key\n";
     while (nr_rounds < max_rounds) {
         ++nr_rounds;
         improvements = 0;
         current = best;
         //find good neighbour:
-//            printKeysquare(current);
-//            cout << "\tnr_rounds: " << nr_rounds << "\n";
         for (int i = 0; i < 5000; ++i) {
             r = rand() % 101;
             if (r < 20)
@@ -46,34 +50,41 @@ int main(){
                 reverseRow(current);
             else if (r < 100)
                 reverseCol(current);
-            else{
-//                    cout << "crazy key\n";
+            else
+            {
+                //crazy key
                 for (int i = 0; i < 5; ++i)
                     swapLetters(current);
             }
 
             scoreKeysquare(current, original_text, original_freq);
+
             diff = current.score - best.score;
-            if (diff > 0) {
+            if (diff > 0)
+            {
                 //score improved
                 improvements++;
             }
 
-            if (diff > 0) {
-                //accept key
+            //use as new key:
+            if (diff > 0)
+            {
+                //better key: accept current as best
                 best = current;
-            } else if (accept(diff, T)) {
-                //accept anyway
+            }
+            else if (accept(diff, T))
+            {
+                //key is worse but accept anyway
                 best = current;
-            } else {
-//                    cerr << "Denied\n";
+            }
+            else
+            {
                 current = best;
             }
 
             if (improvements > 100) {
                 //improved enough
                 //lower temperature
-//                    cout << "\tLower Temp after:" << i << " " << improved <<" \n";
                 break;
             }
         }
@@ -81,29 +92,15 @@ int main(){
         T *= 0.9;
         if (improvements == 0) {
             //no more improvements found
-            cout << "\tNo more improvements: "<< best.score << "\n";
             break;
         }
-        if(nr_rounds%500 == 0){
-            cout << "score:  " << best.score << "\n";
-            cout << "rounds: " << nr_rounds << "\n";
-        }
-        //repeat search
-        }
-        cout << "score: " << best.score << "\n";
-//        printKeysquare(best);
-//    }
-
-//    Keysquare best = keys[0];
-//    for(Keysquare& key : keys){
-//        if(key.score > best.score)
-//            best = key;
-//    }
-//    cout << "best_score: " << lowest_Score << "\n";
-    cout << "key: ("<< best.score << ")\n";
+    }
+    cout << "Key found: \n";
     printKeysquare(best);
     decodeText(best, original_text);
-    cout << original_text << "\n";
+    cout << "Write solution to file\n";
+    writeFile(solution_file.c_str(), original_text, best);
     delete[] original_text;
+    cout << "Done\n";
     return 0;
 }

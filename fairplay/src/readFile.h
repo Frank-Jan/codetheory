@@ -21,4 +21,6 @@ Text readFile(const char* filename);
 //position of frequency for AB is convertLetter(A)*25+convertLetter(B)
 Frequencies* loadFrequencies(const char* filename);
 
+void writeFile(const char* filename, Text solution, Keysquare& key);
+
 #endif //FAIRPLAY_READFILE_H

@@ -1,2 +1,2 @@
 bigram_english_raw.txt: http://practicalcryptography.com/cryptanalysis/letter-frequencies-various-languages/english-letter-frequencies/
-
+rest from same site

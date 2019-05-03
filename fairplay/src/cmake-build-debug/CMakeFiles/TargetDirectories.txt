@@ -1,3 +1,0 @@
-/home/fj/Documents/2018-2019/semester_2/codetheory/fairplay/src/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/fj/Documents/2018-2019/semester_2/codetheory/fairplay/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/fj/Documents/2018-2019/semester_2/codetheory/fairplay/src/cmake-build-debug/CMakeFiles/fairplay.dir

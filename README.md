@@ -1,7 +1,7 @@
 # codetheory
 
-1 Clion project per code
-Benji: enigma
+1 C++ project per code
+Benji: enigma, vigenereplus
 FJ: playfair
 
-TODO: vigenereplus/adfgvx
+TODO: adfgvx

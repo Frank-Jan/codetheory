@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/fairplay.dir/main.cpp.o CMakeFiles/fairplay.dir/readFile.cpp.o  -o /home/fj/Documents/2018-2019/semester_2/codetheory/fairplay/fairplay 

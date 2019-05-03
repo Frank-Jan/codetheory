@@ -70,19 +70,14 @@ Frequencies* loadFrequencies(const char* filename){
             }
             buff[convertLetter(bigram[0])*25 + convertLetter('X')] += floor(n/2);
             buff[convertLetter('X')*25 + convertLetter(bigram[0])] += floor(n/2);
-//            cout << "X" << bigram[0] << "|" << long(n/2) << "\t" << buff[convertLetter('X')*25 + convertLetter(bigram[1])] << "\n";
-//            cout << bigram[0] << "X" << "|" << long(n/2) << "\t" << buff[convertLetter(bigram[0])*25 + convertLetter('X')];
         }
         else{
             buff[convertLetter(bigram[0])*25 + convertLetter(bigram[1])] += n;
-//            cout << bigram[0] << bigram[1] << "|" << n << "\t" << buff[convertLetter(bigram[0])*25 + convertLetter(bigram[1])];
         }
-//        cout << "\n";
     }
 
     file.close();
 
-    std::cout << "----------\n";
     double rescale = (double)1./sum;
     double tmp = 0;
     Frequencies* ret = new Frequencies;
@@ -93,4 +88,21 @@ Frequencies* loadFrequencies(const char* filename){
     }
 
     return ret;
+}
+
+void writeFile(const char* filename, Text solution, Keysquare& key){
+    ofstream file;
+    file.open(filename, std::ios_base::ate);
+
+    if(!file.is_open())
+        throw ExceptionFileNotFound();
+
+    file << solution << "\n";
+    for(int i = 0; i < 5; ++i){
+        for(int j = 0; j < 5; ++j){
+            file << key.key[j][i];
+        }
+        file << "\n";
+    }
+    file.close();
 }
