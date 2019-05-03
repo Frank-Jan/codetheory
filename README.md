@@ -1,7 +1,16 @@
 # codetheory
 
 1 C++ project per code
-Benji: enigma, vigenereplus
-FJ: playfair
 
-TODO: adfgvx
+# enigma:
+in de enigma folder:
+./enigma
+
+# playfair:
+in de playfair folder:
+./fairplay 
+dit genereerd een playfair_solution.txt
+
+# vigenereplus:
+in de vigenereplus folder:
+./vigplus
