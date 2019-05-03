@@ -131,9 +131,38 @@ std::ostream& operator<<(std::ostream& stream, std::vector<int> vec){
     return stream;
 }
 
+std::string dePermuteer(const std::string& input, const std::vector<int>& permutatie){
+    std::string output(input.size(), ' ');
+    float lenPerColumn = float(input.size())/permutatie.size();
+    int normal_columns = permutatie.size();
+    if (int(lenPerColumn) != lenPerColumn) {
+        normal_columns = permutatie.size() * (lenPerColumn - int(lenPerColumn));
+        lenPerColumn = int(lenPerColumn) + 1;
+    }
+    auto a = 0;
+    for (int i = 0; i < permutatie.size(); ++i){
+        auto index = std::find(permutatie.begin(), permutatie.end(), i) - permutatie.begin();
+
+        if (index <= normal_columns) {
+            for (int j = 0; j < lenPerColumn; ++j){
+                output[j*permutatie.size() + index] = input[a];
+                a++;
+            }
+        }
+        else{
+            for (int j = 0; j < lenPerColumn-1; ++j){
+                output[j*permutatie.size() + index] = input[a];
+                a++;
+            }
+        }
+    }
+    return output;
+}
+
 int main() {
 
 //    writeVectors(mogelijkePermutaties(2,10));
+
 
     auto permutaties = readVectors();
 
@@ -141,23 +170,43 @@ int main() {
 
 
     for(const auto& permutatie : permutaties){
-        auto gepermuteerde_tekst = permuteer(text, permutatie);
+        auto gepermuteerde_tekst = dePermuteer(text, permutatie);
 
-        for(auto i = 2; i <= 10; ++i){
+        for(auto i = 2; i <= 10; ++i) {
             double index_of_coincidence = 0;
-            index_of_coincidence = berekenFrequenties(gepermuteerde_tekst, i);
+            index_of_coincidence = 0;
 
-            if (index_of_coincidence > maxCoincidence){
+            for (auto index = 0; index < i; ++index)
+                index_of_coincidence += berekenFrequenties(gepermuteerde_tekst, i);
+
+            index_of_coincidence /= i;
+
+            if (index_of_coincidence > maxCoincidence ) {
                 maxCoincidence = index_of_coincidence;
                 beste_permutatie = permutatie;
                 codewoord_lengte = i;
                 std::cout << index_of_coincidence << ' ' << permutatie << ' ' << i << std::endl;
 
             }
-            if (index_of_coincidence > 0.06)
+            if (index_of_coincidence > 0.07) {
+                std::cout << gepermuteerde_tekst << std::endl;
                 std::cout << index_of_coincidence << ' ' << permutatie << ' ' << i << std::endl;
+                auto lengte_codewoord = i;
+                for (int index = 0; index < i; ++index) {
+                    std::map<char, std::size_t> first_pass;
+                    for(int i = index; i < gepermuteerde_tekst.size(); i += lengte_codewoord){
+                        if(first_pass.find(gepermuteerde_tekst[i]) == first_pass.end())
+                            first_pass[gepermuteerde_tekst[i]] = 1;
+                        else
+                            first_pass[gepermuteerde_tekst[i]] += 1;
+                    }
+//                    for(auto pair : first_pass){
+//                        std::cout << pair.first << " : " << pair.second << std::endl;
+//                    }
+//                    std::cout << "===============\n\n===============" << std::endl;
+                }
+                std::cout << std::endl;
+            }
         }
     }
-    std::cout << "Beste permutatie: " << beste_permutatie << ", codewoord lengte: " << codewoord_lengte << " SCORE: " << maxCoincidence << std::endl;
-
 }
