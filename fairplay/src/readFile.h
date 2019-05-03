@@ -6,10 +6,19 @@
 #define FAIRPLAY_READFILE_H
 
 #include <fstream>
+#include <vector>
+#include "utils.h"
 #include "exceptions.h"
 
 using namespace std;
 
-char* readFile(const char* filename);
+Text readFile(const char* filename);
+
+//returns 625 long array with frequencies of every bigram
+//J is converted to I
+//doubled letters are added half and half to LX and XL (with L the doubled letter)
+//doubled letters are left 0
+//position of frequency for AB is convertLetter(A)*25+convertLetter(B)
+Frequencies* loadFrequencies(const char* filename);
 
 #endif //FAIRPLAY_READFILE_H

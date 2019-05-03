@@ -1,99 +1,109 @@
-#include <iostream>
+#include "utils.h"
 #include "readFile.h"
-#include <exception>
-#include <string.h>
-
-void printText(const char* text, unsigned blocksize = 0){
-    if(blocksize <= 1){
-        std::cout << text << "\n";
-    }
-    else{
-        unsigned textsize = strlen(text);
-        unsigned pos = 0;
-        while(pos < textsize) {
-            std::cout << text[pos];
-            if (pos % blocksize == blocksize -1) {
-                std::cout << "\n";
-            }
-            pos++;
-        }
-    }
-}
-
-void printTabs(unsigned tabs = 0){
-    for(int t = 0; t < tabs; t++){
-        std::cout << "\t";
-    }
-}
-
-void printHelp(unsigned tabs = 0){
-    printTabs(tabs);
-    std::cout << "-h or --help for help\n";
-}
+#include <iostream>
+#include <cstring>
 
 
-int main(int argc, char* argv[]) {
-    //read arguments:
-    if(argc == 1){
-        //no arguments given
-        std::cout << "No arguments given:\n";
-        printHelp(1);
-        return 0;
-    }
-    bool error = false;
-    char * filename;
-    for(int i = 1; i < argc; i++){
-        if(strcmp(argv[i],"-h") == 0 or strcmp(argv[i],"--help") == 0){ //asking help
-            printHelp();
-        }
-        else if(strcmp(argv[i], "-f") == 0){                            //giving filename
-            if(argc > i+1){
-                filename = argv[i+1];
-            }
+int main(){
+    string filename = "data/playfair.txt";
+    Text original_text = readFile(filename.c_str());
+    Frequencies original_freq = *loadFrequencies("data/bigram_english_raw.txt");    //array of 625 bigram frequencies
+
+    //generate 5 different keys
+    Keysquare best = {'P','A','L','M','E','R','S','T','O','N','B','C','D','F','G','H','I','K','Q','U','V','W','X','Y','Z'};
+    generateKey(best);
+    scoreKeysquare(best, original_text, original_freq);
+
+    double diff;
+    double T0 = 0.05;
+    double T = T0;   //temperature
+    int improvements;
+    double r;       //holds random number
+    Keysquare current;
+    int nr_rounds = 0;
+    int max_rounds = 10000;
+    double lowest_Score = 10000000;
+    while (nr_rounds < max_rounds) {
+        ++nr_rounds;
+        improvements = 0;
+        current = best;
+        //find good neighbour:
+//            printKeysquare(current);
+//            cout << "\tnr_rounds: " << nr_rounds << "\n";
+        for (int i = 0; i < 5000; ++i) {
+            r = rand() % 101;
+            if (r < 20)
+                swapLetters(current);
+            else if (r < 40)
+                swapRandomCols(current);
+            else if (r < 60)
+                swapRandomRows(current);
+            else if (r < 70)
+                flipHorizontal(current);
+            else if (r < 80)
+                flipVertical(current);
+            else if (r < 90)
+                reverseRow(current);
+            else if (r < 100)
+                reverseCol(current);
             else{
-                std::cout << "Filename missing\n";
-                error = true;
+//                    cout << "crazy key\n";
+                for (int i = 0; i < 5; ++i)
+                    swapLetters(current);
             }
-            i++;
-        }
-        else if(strcmp(argv[i], "-d") == 0){                            //giving working directory
-            if(argc > i+1){
 
+            scoreKeysquare(current, original_text, original_freq);
+            diff = current.score - best.score;
+            if (diff > 0) {
+                //score improved
+                improvements++;
+            }
+
+            if (diff > 0) {
+                //accept key
+                best = current;
+            } else if (accept(diff, T)) {
+                //accept anyway
+                best = current;
+            } else {
+//                    cerr << "Denied\n";
+                current = best;
+            }
+
+            if (improvements > 100) {
+                //improved enough
+                //lower temperature
+//                    cout << "\tLower Temp after:" << i << " " << improved <<" \n";
+                break;
             }
         }
-        else{
-            std::cout << "Unknown argument: " << argv[i] << ".\n";
-            printHelp(1);
+        //lower temperature
+        T *= 0.9;
+        if (improvements == 0) {
+            //no more improvements found
+            cout << "\tNo more improvements: "<< best.score << "\n";
+            break;
         }
-    }
-
-    if(error){
-        return 1;
-    }
-
-    std::cout << "Filename: " << filename << "\n";
-
-    char * text;
-    try{
-        text = readFile(filename);
-    }
-    catch(ExceptionFileNotFound &e){
-        std::cerr << e.what() << "\n";
-        return 1;
-    }
-    catch(exception &e){
-        std::cerr << e.what() << "\n";
-        try{
-            delete text;
+        if(nr_rounds%500 == 0){
+            cout << "score:  " << best.score << "\n";
+            cout << "rounds: " << nr_rounds << "\n";
         }
-        catch(...){
-
+        //repeat search
         }
-        return 1;
-    }
-    printText(text, 20);
+        cout << "score: " << best.score << "\n";
+//        printKeysquare(best);
+//    }
 
-
-    delete text;
+//    Keysquare best = keys[0];
+//    for(Keysquare& key : keys){
+//        if(key.score > best.score)
+//            best = key;
+//    }
+//    cout << "best_score: " << lowest_Score << "\n";
+    cout << "key: ("<< best.score << ")\n";
+    printKeysquare(best);
+    decodeText(best, original_text);
+    cout << original_text << "\n";
+    delete[] original_text;
     return 0;
 }
