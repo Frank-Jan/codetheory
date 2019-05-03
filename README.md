@@ -1,16 +1,19 @@
 # codetheory
+Benjamin Vandersmissen
+Franciscus Fekkes
 
-1 C++ project per code
+## rapport
+Rapport is te vinden in doc
 
-# enigma:
+## enigma:
 in de enigma folder:
 ./enigma
 
-# playfair:
+## playfair:
 in de playfair folder:
 ./fairplay 
 dit genereerd een playfair_solution.txt
 
-# vigenereplus:
+## vigenereplus:
 in de vigenereplus folder:
 ./vigplus
