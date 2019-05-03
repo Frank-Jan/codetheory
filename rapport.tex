@@ -1,4 +1,6 @@
 \documentclass{article}
+\usepackage{hyperref}
+
 
 % Enter the name of the subject
 \newcommand{\assignmentname}{Rapport}
@@ -30,10 +32,15 @@ Voor Vigenere Plus moesten we 2 stappen doen, eerst de juiste permutatie vinden 
 De eerste manier die we probeerden om uit te vinden was gewoon te kijken naar de maximum en de minimum frequentie van letters in een groepje en als die voldoende ver uit elkaar lagen, dan was het de tekst die we zochten. We hebben geexperimenteerd met verschillende tresholds, die we gebaseerd hebben op frequentietabellen van de talen. \\ \\
 Een andere manier was dan te zien naar de som van de afstanden tussen de frequentie van elke letter en de frequentie als de letters uniform verdeeld zouden zijn. De gepermuteerde tekst met de hoogste som, zou dan wel de juiste tekst moeten zijn. \\ \\
 Deze eerste 2 werkwijzes gaven geen fatsoenlijke resultaten. Achteraf bleek dat er nog een programmeerfout in zat in het berekenen van de frequenties en dat dat de reden was waardoor die 2 methodes niet werkten, maar toen waren we al begonnen met het implementeren van nog een andere methode. \\ \\
+Ook bij de laatste methode waren er een hoop problemen, tot we doorhadden dat we een denkfout hadden gemaakt. We gingen er immers vanuit dat het omzetten van een tekst met enkele kolom-transpositie naar ciphertext en terug dezelfde operatie was. Maar dit is niet zo. \\ \\
 De laatste manier die we probeerden was het gebruiken van de zogenaamde 'Index of Coincidence', dit is een percentage berekend voor de hele tekst en des te hoger het percentage, des te meer kans dat de tekst geschreven is in een taal en niet gewoon random characters is. \\ \\
 
 \subsection{Resultaat}
-TBA: wachten op simulaties
+Index of coincidence gaf wel een goed resultaat, oorspronkelijk hadden we gewoon gekozen om de tekst met de grootste index of coincidence te kraken, maar dit bleek een nonsens tekst te zijn. Dan hebben we een treshold ingevoerd, waarbij we alle teksten bijhielden met een hogere index of coincidence dan 0.7, dit gaf dan ons wel het verwachte resultaat. De frequentie analyse en raden van het codewoord gebeurde niet in onze code, maar via een externe site (\url{https://f00l.de/hacking/vigenere.php}) \\\\
+Deel van de oplossing: 
+\begin{verbatim}
+KLOOPZOHARDALSMIJNKORTEBLOTEBENENMIJDRAGENKUNNEN
+\end{verbatim}
 
 
 
